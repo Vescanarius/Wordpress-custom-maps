@@ -1,0 +1,33 @@
+/*liste d'implantations*/
+.type-carte_coupures .voyant {
+    width:10px;
+    height:10px;
+    border-radius:50%;  
+}
+
+.type-carte_coupures .voyant.rouge { background-color:red; }
+.type-carte_coupures .voyant.vert { background-color:green; }
+ 
+
+/*Edition articles*/
+.post-type-carte_coupures .inside label{
+   display:block;
+     margin-top:10px;
+   margin-bottom:3px;
+}
+
+.post-type-carte_coupures textarea{
+    max-width:500px;
+    width:100%;
+    min-height:100px;
+}
+
+/*style des erreurs*/
+.post-type-carte_coupures #post label.error {
+    color: #FB3A3A;
+    display: inline-block;
+    margin: 4px 0 5px 4px;
+    padding: 0;
+    text-align: left;
+}
+
