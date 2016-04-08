@@ -1,1 +1,10 @@
 #map_canvas img { max-width: none!important; box-shadow:none!important; }
+
+.imgleft{
+    float: left;
+    margin-right: 10px;
+}
+.txtright{
+    float: left;
+    padding: 10px;
+}

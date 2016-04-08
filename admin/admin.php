@@ -72,6 +72,8 @@ function infos_implantation($post) {
     $lat = get_post_meta($post->ID, '_lat', true);
     $lng = get_post_meta($post->ID, '_lng', true);
     $description = get_post_meta($post->ID, '_description', true);
+    $departement =  get_post_meta($post->ID, '_departement', true);
+
     ?>
         <label for="lat">Latitude : </label>
         <input id="lat" maxlength="11" type="text" name="lat" value="<?php echo $lat; ?>"/>
@@ -79,8 +81,16 @@ function infos_implantation($post) {
         <label for="lng">Longitude : </label>
         <input id="lng" maxlength="11" type="text" name="lng" value="<?php echo $lng; ?>"/>
         
-        <label for="description">La description générique : </label>
+        <label for="description">URL de l'image du logo : </label>
         <textarea id="description" name="description"><?php echo $description; ?></textarea>
+        
+        <label for="departement">Département : </label>
+        <select name="departement" id="departement">
+            <option value="mar" <?php if($departement == 'mar'){echo 'selected';}?>>Martinique</option>
+            <option value="gua" <?php if($departement == 'gua'){echo 'selected';}?>>Guadeloupe</option>
+            <option value="guy" <?php if($departement == 'guy'){echo 'selected';}?>>Guyane</option>
+            <option value="stmar" <?php if($departement == 'stmar'){echo 'selected';}?>>Saint Martin</option>
+        </select> 
     <?php
 }
 
@@ -89,13 +99,13 @@ function alert_implantation($post) {
     $statut =  get_post_meta($post->ID, '_statut', true);
     $desc_alert =  get_post_meta($post->ID, '_desc_alert', true);
     ?>
-        <label>Statut :</label>
+        <label>Afficher :</label>
         <select name="statut" id="statut">
-            <option value="1" <?php if($statut == '1'){echo 'selected';}?>>En fonctionnement</option>
-            <option value="0" <?php if($statut == '0'){echo 'selected';}?>>En panne</option>
+            <option value="1" <?php if($statut == '1'){echo 'selected';}?>>Oui</option>
+            <option value="0" <?php if($statut == '0'){echo 'selected';}?>>Non</option>
         </select>
         
-        <label for="desc-alert">Le message d'alert en cas de panne : </label>
+        <label for="desc-alert">Adresse et coordonnées : </label>
         <textarea id="desc-alert" name="desc_alert"><?php echo $desc_alert; ?></textarea>
     <?php 
 }
@@ -110,6 +120,9 @@ function save_metabox($post_id) {
     if (isset($_POST['lng'])) {
         update_post_meta($post_id, '_lng', esc_html($_POST['lng']));
     }
+    if (isset($_POST['departement'])) {
+        update_post_meta($post_id, '_departement', esc_html($_POST['departement']));
+    } 
     if (isset($_POST['description'])) {
         update_post_meta($post_id, '_description', esc_textarea($_POST['description']));
     }

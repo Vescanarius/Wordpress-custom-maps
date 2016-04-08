@@ -9,22 +9,29 @@ function initialize() {
     /****** Récupération de toutes les maps ******/
     jQuery(function ($) {
 
+       
+       
+
         $('.map_canvas').each(function () {
             var lattitude = $(this).attr('lat');
             var longitude = $(this).attr('long');
-            Creationmaps(this.id, lattitude, longitude);
+            var categorie = $(this).attr('categorie');
+            var zoomperso = $(this).attr('zoom');
+            
+            Creationmaps(this.id, lattitude, longitude, categorie, zoomperso);
         }
         );
 
 
-        function Creationmaps(carte, lattitude, longitude) {
+        function Creationmaps(carte, lattitude, longitude, categorie, zoomperso) {
             /*Création de la map*/
-            var map = new google.maps.Map(document.getElementById(carte), {
+            var map = 'map' + categorie;
+            console.log (map);
+            map = new google.maps.Map(document.getElementById(carte), {
                 center: new google.maps.LatLng(lattitude, longitude),
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 zoom: 11
             });
-
 
             /*----------------REQUETE AJAX-------------------*/
             var points = {};
@@ -34,18 +41,24 @@ function initialize() {
                 if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                     points = JSON.parse(xmlhttp.responseText);
                 }
-
             };
             xmlhttp.send(null);
 
 
             /*Parcour du JSON*/
             for (var i in points) {
+
                 var building = points[i];
-                var location = new google.maps.LatLng(building.lat, building.lng);
-                addMarker(map, building.name, building.description, location, building.statut, building.desc_alert);
+                //console.log(categorie + " -- " + building.departement);
+                if (categorie == building.departement) {
+                    var location = new google.maps.LatLng(building.lat, building.lng);
+                    addMarker(map, building.name, building.description, location, building.statut, building.desc_alert);
+                }
             }
+            
         }
+
+
     });
 }
 
@@ -79,14 +92,14 @@ function addMarker(map, name, description, location, statut, messageAlert) {
     /*Création du contenu*/
     var signalerButton = '';
     if (statut == 1) {/* Si "en fonctionnement" */
-        signalerButton = '<a href="/contact">Signaler une panne</a>';
-        messageAlert = '';
+        //signalerButton = '<a href="/contact">Signaler une panne</a>';
+        //messageAlert = '';
     } else if (messageAlert && statut == 0) { /*Si "en panne" et qu'une date à été rentrée*/
         messageAlert = '<div class="alert" style="color:red;"><strong>' + messageAlert + '</strong></div>';
     }
 
     var contentString = '<h3>' + name + '</h3>' +
-            '<p>' + description + '</p>' + signalerButton + messageAlert;
+            '<div class="imgleft"><img width="100" src="' + description + '"/>' + '</div><div class="txtright">'+ messageAlert +'</div>';
 
 
     /*Info bulle*/
@@ -102,3 +115,19 @@ function addMarker(map, name, description, location, statut, messageAlert) {
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
+
+jQuery(function ($) {
+
+    $(".vc_tta-tab").click(function () {
+        // initialize();
+
+
+// redraw on tab changer - C4est moche mais ça marche pas bien autrement... a creuser 
+        setTimeout(function () {
+            //google.maps.event.trigger(mapmar, 'resize');
+            initialize();
+        }, 1);
+
+
+    })
+});
